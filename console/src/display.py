@@ -1,6 +1,6 @@
 """Output formatting utilities for Todo application."""
 
-from src.models import Task, TaskStatus
+from models import Task, TaskStatus
 
 
 def truncate(text: str, max_length: int = 50) -> str:

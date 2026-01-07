@@ -2,7 +2,33 @@
   "permissions": {
     "allow": [
       "Bash(python3 -m unittest:*)",
-      "Bash(.venv/bin/python3:*)"
+      "Bash(.venv/bin/python3:*)",
+      "Bash(python3 -c \"from main import app; print\\(''App loaded successfully''\\)\")",
+      "Bash(curl -X POST http://localhost:8000/api/auth/signup -H \"Content-Type: application/json\" -d '{\"\"email\"\":\"\"test@example.com\"\", \"\"password\"\":\"\"password123\"\"}')",
+      "Bash(timeout 15s python3 -m uvicorn:*)",
+      "Bash(curl -X GET http://localhost:8000/api/tasks -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyX3Rlc3RfMTc2NzM2MjEyMSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImV4cCI6MTc2Nzk4NDkyMSwiaWF0IjoxNzY3MzgwMTIxfQ.TC3rTyM-CvYv17qgbcpSRqLjnxs46RH878p_mtmqDig\")",
+      "Bash(curl -X POST http://localhost:8000/api/tasks -H \"Content-Type: application/json\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyX3Rlc3RfMTc2NzM2MjEyMSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImV4cCI6MTc2Nzk4NDkyMSwiaWF0IjoxNzY3MzgwMTIxfQ.TC3rTyM-CvYv17qgbcpSRqLjnxs46RH878p_mtmqDig\" -d '{\"\"title\"\":\"\"Test task\"\", \"\"description\"\":\"\"This is a test task\"\"}')",
+      "Bash(curl -X GET http://localhost:8000/api/auth/session -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyX3Rlc3RfMTc2NzM2MjEyMSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImV4cCI6MTc2Nzk4NDkyMSwiaWF0IjoxNzY3MzgwMTIxfQ.TC3rTyM-CvYv17qgbcpSRqLjnxs46RH878p_mtmqDig\")",
+      "Bash(python3 -m pytest tests/ -v)",
+      "Bash(npm test)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks)",
+      "Skill(sp.phr)",
+      "Bash(python3 -m venv .venv)",
+      "Bash(python3 -m venv backend/.venv)",
+      "Bash(source backend/.venv/bin/activate)",
+      "Bash(pip install --upgrade pip)",
+      "Bash(pip install -r ../requirements.txt)",
+      "Bash(source .venv/bin/activate)",
+      "Bash(pip install -r requirements.txt)",
+      "Bash(cat /tmp/claude/-mnt-e-Junaid-Hackathon-II-Phase-II-todo-fullstack/tasks/b97840d.output)",
+      "Bash(python -c:*)",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload)",
+      "Bash(npm run dev)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)"
     ]
   }
 }

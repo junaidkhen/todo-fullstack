@@ -1,8 +1,8 @@
 """Main entry point for Todo In-Memory Console App."""
 
 import sys
-from src.task_manager import TaskManager
-from src.commands import handle_add, handle_list, handle_mark, handle_update, handle_delete, handle_help
+from task_manager import TaskManager
+from commands import handle_add, handle_list, handle_mark, handle_update, handle_delete, handle_help
 
 
 def main() -> None:

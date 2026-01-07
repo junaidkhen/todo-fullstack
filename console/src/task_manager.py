@@ -1,7 +1,7 @@
 """Task management business logic."""
 
-from src.models import Task, TaskStatus
-from src.validation import validate_title
+from models import Task, TaskStatus
+from validation import validate_title
 
 
 class TaskManager:

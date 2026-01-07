@@ -1,232 +1,243 @@
-# Todo In-Memory Console App
+# Multi-User Full-Stack Todo Web Application
 
-A simple command-line todo list application that stores tasks in memory. Perfect for quick task tracking during your work session.
+A modern, full-stack todo list application with user authentication, persistent storage, and responsive web interface. Built with Next.js, FastAPI, and PostgreSQL for production-ready task management.
 
 ## Features
 
-- ✅ **Add Tasks** - Create tasks with title and optional description
-- ✅ **View Tasks** - Display all tasks in a formatted table
-- ✅ **Mark Complete** - Toggle tasks between pending and completed status
-- ✅ **Update Tasks** - Modify task title and/or description
-- ✅ **Delete Tasks** - Permanently remove tasks
-- ✅ **In-Memory Storage** - Fast, lightweight (data clears on exit)
+- ✅ **Multi-User Authentication** - Secure sign-up and sign-in with Better Auth
+- ✅ **Task Management** - Create, view, update, complete, and delete tasks
+- ✅ **User Isolation** - Strict data separation between users (no cross-user access)
+- ✅ **Persistent Storage** - Tasks stored in Neon PostgreSQL database
+- ✅ **Responsive UI** - Works on mobile, tablet, and desktop devices
+- ✅ **Real-time Updates** - Optimistic UI with loading states and error handling
+- ✅ **JWT Authentication** - Stateless authentication with token validation
 
 ## Requirements
 
-- Python 3.13 or higher
-- No external dependencies (uses Python standard library only)
+- **Frontend**: Node.js 20.x+, npm 10.x+
+- **Backend**: Python 3.13+, pip
+- **Database**: PostgreSQL (local or Neon serverless)
+- **Development**: Git
 
-## Installation
+## Quick Setup
 
-1. Clone or download this repository
-2. Navigate to the backend directory:
+### Prerequisites
+
+1. **Install Node.js and npm** (version 20.x+)
+2. **Install Python 3.13+** with pip
+3. **Install Git**
+
+### Installation
+
+1. Clone the repository:
    ```bash
-   cd todo/Todo-app
+   git clone <your-repo-url> todo-fullstack
+   cd todo-fullstack
    ```
 
-No additional installation steps needed!
+2. **Set up the backend (FastAPI)**:
+   ```bash
+   cd backend
+   python3 -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-## Usage
+3. **Create backend environment variables**:
+   ```bash
+   cp .env.example .env
+   ```
 
-### Starting the Application
+   Edit `.env` and set:
+   ```bash
+   # Generate a secure secret: openssl rand -base64 32
+   BETTER_AUTH_SECRET=your-32-char-secret-here
+   DATABASE_URL=postgresql+asyncpg://user:pass@localhost:5432/todo_dev
+   CORS_ORIGINS=http://localhost:3000
+   ```
 
-Run the application using Python:
+4. **Set up the frontend (Next.js)**:
+   ```bash
+   cd ../frontend
+   npm install
+   cp .env.example .env.local
+   ```
 
-```bash
-python3 -m src.main
-```
+   Edit `.env.local` and set:
+   ```bash
+   BETTER_AUTH_SECRET=your-32-char-secret-here  # Same as backend
+   BETTER_AUTH_URL=http://localhost:3000
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   ```
 
-You'll see a welcome message:
-```
-Welcome to Todo App!
-Type 'help' for available commands.
+5. **Initialize the database**:
+   ```bash
+   cd ../backend
+   python -m src.init_db
+   ```
 
-todo>
-```
+6. **Start both servers** (in separate terminals):
+   ```bash
+   # Terminal 1 - Backend
+   cd backend
+   source .venv/bin/activate
+   uvicorn main:app --reload --port 8000
 
-### Available Commands
+   # Terminal 2 - Frontend
+   cd frontend
+   npm run dev
+   ```
 
-| Command | Description |
-|---------|-------------|
-| `add` | Add a new task |
-| `list` | View all tasks |
-| `mark` | Mark a task as complete/incomplete |
-| `update` | Update a task's title or description |
-| `delete` | Delete a task |
-| `help` | Show available commands |
-| `exit` or `quit` | Exit the application |
-
-### Example Session
-
-```
-todo> add
-Enter task title: Buy groceries
-Enter task description (optional): Milk, eggs, bread
-✓ Task #1 added: Buy groceries
-
-todo> add
-Enter task title: Write report
-Enter task description (optional): Q4 financial summary
-✓ Task #2 added: Write report
-
-todo> list
-┌────┬──────────────────────────┬──────────────┬─────────────────────────────────────────────────────┐
-│ ID │ Title                    │ Status       │ Description                                         │
-├────┼──────────────────────────┼──────────────┼─────────────────────────────────────────────────────┤
-│ 1  │ Buy groceries            │ [ ] Pend.    │ Milk, eggs, bread                                   │
-│ 2  │ Write report             │ [ ] Pend.    │ Q4 financial summary                                │
-└────┴──────────────────────────┴──────────────┴─────────────────────────────────────────────────────┘
-
-todo> mark
-Enter task ID to mark: 1
-✓ Task #1 'Buy groceries' marked as completed
-
-todo> list
-┌────┬──────────────────────────┬──────────────┬─────────────────────────────────────────────────────┐
-│ ID │ Title                    │ Status       │ Description                                         │
-├────┼──────────────────────────┼──────────────┼─────────────────────────────────────────────────────┤
-│ 1  │ Buy groceries            │ [✓] Comp.    │ Milk, eggs, bread                                   │
-│ 2  │ Write report             │ [ ] Pend.    │ Q4 financial summary                                │
-└────┴──────────────────────────┴──────────────┴─────────────────────────────────────────────────────┘
-
-todo> update
-Enter task ID to update: 2
-Enter new title (leave empty to keep current): Write Q4 Report
-Enter new description (leave empty to keep current): Financial summary with charts
-✓ Task #2 updated successfully
-
-todo> delete
-Enter task ID to delete: 1
-✓ Task #1 'Buy groceries' deleted successfully
-
-todo> exit
-Goodbye! All tasks will be lost.
-```
+7. **Access the application**:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - Backend API Docs: http://localhost:8000/docs
 
 ## Project Structure
 
 ```
-todo/
-├── Todo-app/              # Backend application
+todo-fullstack/
+├── console/              # Phase I console app (reference only)
+├── frontend/             # Next.js 16+ web application
 │   ├── src/
-│   │   ├── __init__.py         # Package marker
-│   │   ├── main.py             # Entry point and REPL loop
-│   │   ├── models.py           # Task and TaskStatus definitions
-│   │   ├── task_manager.py     # Core business logic
-│   │   ├── commands.py         # Command handlers
-│   │   ├── display.py          # Output formatting
-│   │   └── validation.py       # Input validation
-│   ├── tests/
-│   │   ├── __init__.py
-│   │   ├── test_models.py
-│   │   ├── test_task_manager.py
-│   │   ├── test_commands.py
-│   │   ├── test_validation.py
-│   │   ├── test_display.py
-│   │   └── test_integration.py
-│   ├── .venv/             # Virtual environment
-│   ├── demo_app.py        # Demo script
-│   ├── pyproject.toml     # Project configuration
-│   └── requirements.md    # Requirements documentation
-├── README.md              # Project documentation
-└── TESTING_REPORT.md      # Testing report
+│   │   ├── app/         # App Router pages (signup, signin, tasks)
+│   │   ├── components/  # React components (TaskList, TaskForm, etc.)
+│   │   └── lib/         # Utilities (auth, api)
+│   ├── public/          # Static assets
+│   ├── package.json
+│   └── .env.local       # Frontend environment variables
+├── backend/              # FastAPI Python backend
+│   ├── src/
+│   │   ├── models/      # SQLModel database models
+│   │   ├── api/         # FastAPI route handlers
+│   │   ├── auth/        # JWT validation logic
+│   │   └── database.py  # Database connection management
+│   ├── tests/           # Backend tests
+│   ├── main.py          # FastAPI app entry point
+│   ├── requirements.txt
+│   └── .env             # Backend environment variables
+├── specs/                # Documentation and specifications
+└── README.md             # This file
 ```
 
 ## Running Tests
 
-Run all tests:
+### Backend Tests
 ```bash
-python3 -m unittest discover tests -v
+cd backend
+source .venv/bin/activate
+pytest tests/ -v
 ```
 
-Run specific test module:
+### Frontend Tests
 ```bash
-python3 -m unittest tests.test_task_manager -v
+cd frontend
+npm test
 ```
 
-Expected output: **114 tests, all passing**
+## Environment Variables
 
-## Technical Details
+### Backend (.env)
+- `BETTER_AUTH_SECRET`: JWT signing secret (must match frontend)
+- `DATABASE_URL`: PostgreSQL connection string (with asyncpg)
+- `CORS_ORIGINS`: Comma-separated list of allowed origins
 
-### Architecture
+### Frontend (.env.local)
+- `BETTER_AUTH_SECRET`: JWT validation secret (must match backend)
+- `NEXT_PUBLIC_API_URL`: Backend API URL for server components
 
-- **Clean Architecture**: Separation of concerns with distinct layers
-  - Models: Data structures (Task, TaskStatus)
-  - Business Logic: TaskManager for CRUD operations
-  - Commands: User interface handlers
-  - Display: Output formatting
-  - Validation: Input sanitization
+## API Endpoints
 
-- **Type Safety**: Full type hints throughout codebase
-- **Error Handling**: Comprehensive validation with clear error messages
-- **Testing**: 114 unit and integration tests with full coverage
+### Authentication (via Better Auth)
+- `POST /api/auth/signup` - Create new user
+- `POST /api/auth/signin` - Sign in existing user
+- `POST /api/auth/signout` - Sign out user
 
-### Design Decisions
-
-1. **In-Memory Storage**: Uses Python list for fast operations
-2. **ID Management**: Auto-incrementing IDs that are never reused
-3. **Data Validation**: Input validation at command handler level
-4. **Display Formatting**: Fixed-width ASCII tables with truncation
-5. **Performance**: All operations complete in < 1 second (tested with 150 tasks)
-
-### Limitations
-
-- **No Persistence**: Tasks are lost when application exits
-- **Single User**: Designed for individual use
-- **No Editing History**: No undo/redo functionality
-- **Basic Formatting**: Simple ASCII tables (no color support)
+### Task Management
+- `GET /api/tasks` - List user's tasks
+- `POST /api/tasks` - Create new task
+- `GET /api/tasks/{id}` - Get specific task
+- `PUT /api/tasks/{id}` - Update task
+- `PATCH /api/tasks/{id}/toggle` - Toggle completion status
+- `DELETE /api/tasks/{id}` - Delete task
 
 ## Development
 
 ### Code Quality
-
-- ✅ PEP 8 compliant
-- ✅ Type hints on all public functions
-- ✅ Comprehensive docstrings
-- ✅ 114 passing tests
-- ✅ No external dependencies
+- **Frontend**: TypeScript strict mode, ESLint, Prettier
+- **Backend**: Python type hints, Black formatting, mypy
+- **Testing**: Pytest for backend, Jest for frontend
+- **Security**: JWT validation, SQL injection prevention
 
 ### Adding New Features
+1. Update data models in `backend/src/models/` if needed
+2. Add API endpoints in `backend/src/api/`
+3. Create React components in `frontend/src/components/`
+4. Update Next.js pages in `frontend/src/app/`
+5. Write tests in respective test directories
+6. Update documentation
 
-1. Update data model in `src/models.py` if needed
-2. Add business logic to `src/task_manager.py`
-3. Create command handler in `src/commands.py`
-4. Wire command in `src/main.py`
-5. Write tests in `tests/`
-6. Update this README
+## Deployment
+
+### Frontend (Next.js)
+1. Build for production: `npm run build`
+2. Deploy to Vercel, Netlify, or similar platform
+3. Set environment variables in deployment platform
+
+### Backend (FastAPI)
+1. Build Docker container or deploy directly
+2. Set production environment variables
+3. Use production PostgreSQL instance
+4. Configure SSL/HTTPS
+
+## Security Features
+
+- **JWT Authentication**: Stateless, secure token-based auth
+- **User Isolation**: Each user can only access their own tasks
+- **SQL Injection Prevention**: SQLModel parameterized queries
+- **CORS Configuration**: Restricted to allowed origins only
+- **Password Security**: Better Auth handles secure password hashing
 
 ## Troubleshooting
 
-**Q: Application doesn't start**
-- Ensure Python 3.13+ is installed: `python3 --version`
-- Run from the correct directory (where src/ folder is located)
+**Q: Frontend can't connect to backend**
+- Check that both servers are running
+- Verify CORS settings in backend `.env`
+- Ensure `NEXT_PUBLIC_API_URL` matches backend address
 
-**Q: Tasks disappeared**
-- This is expected! Tasks are stored in memory only and are cleared when you exit
+**Q: Authentication fails between frontend and backend**
+- Verify `BETTER_AUTH_SECRET` is identical in both `.env` files
+- Restart both servers after changing secrets
+- Clear browser cookies and cache
 
-**Q: Command not recognized**
-- Type `help` to see all available commands
-- Commands are case-insensitive
+**Q: Database connection errors**
+- Check PostgreSQL is running and accessible
+- Verify `DATABASE_URL` format: `postgresql+asyncpg://...`
+- Test connection with `psql` directly
 
-**Q: Can't update/delete a task**
-- Verify the task ID with `list` command first
-- Task IDs are permanent and never reused
+**Q: Task data not persisting**
+- Verify database initialization was successful
+- Check that `python -m src.init_db` ran without errors
+- Confirm database connection string is correct
+
+## Contributing
+
+This project follows Spec-Driven Development practices. To contribute:
+1. Review the specifications in `specs/002-fullstack-todo-web/`
+2. Follow the implementation plan in `specs/002-fullstack-todo-web/plan.md`
+3. Add tests for new functionality
+4. Update documentation as needed
 
 ## License
 
 This project was created as part of a coding exercise. Feel free to use and modify as needed.
 
-## Contributing
-
-This is a demonstration project. For learning purposes, try:
-- Adding file persistence (JSON, SQLite)
-- Implementing task priorities
-- Adding due dates and reminders
-- Creating a graphical user interface
-- Adding task categories/tags
-
 ## Credits
 
-Built with Python 3.13+ using Test-Driven Development (TDD) methodology.
-Developed following Spec-Driven Development practices.
+Built with:
+- **Frontend**: Next.js 16+, React, TypeScript, Tailwind CSS, Better Auth
+- **Backend**: FastAPI, Python 3.13+, SQLModel, asyncpg
+- **Database**: PostgreSQL (Neon serverless)
+- **Development**: Following Spec-Driven Development methodology
 "# todo" 
+"# todo-fullstack" 

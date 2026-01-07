@@ -208,3 +208,25 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- Neon PostgreSQL (serverless) with SQLModel ORM and async driver (asyncpg) (002-fullstack-todo-web)
+
+## Prompt History Records (PHRs)
+All user interactions and development activities are recorded as Prompt History Records (PHRs) in the `history/prompts/` directory. These records provide complete traceability of the development process:
+
+- `history/prompts/constitution/` - Project constitution and principles
+- `history/prompts/002-fullstack-todo-web/` - Feature-specific prompts and decisions
+- `history/prompts/general/` - General development activities
+
+Each PHR captures:
+- Complete user input verbatim
+- Assistant responses and actions taken
+- Files modified during the interaction
+- Test results and validation outcomes
+- Architectural decisions made
+
+## Recent Changes
+- 002-fullstack-todo-web: Added Neon PostgreSQL (serverless) with SQLModel ORM and async driver (asyncpg)
+- Added comprehensive PHR system for development traceability
+- Implemented multi-user full-stack todo application with authentication

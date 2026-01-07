@@ -1,9 +1,9 @@
 """Command handlers for Todo application."""
 
 import sys
-from src.task_manager import TaskManager
-from src.validation import validate_task_id
-from src.display import (
+from task_manager import TaskManager
+from validation import validate_task_id
+from display import (
     format_task_table,
     show_empty_message,
     show_success,

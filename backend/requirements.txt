@@ -1,0 +1,21 @@
+fastapi==0.115.0
+sqlmodel==0.0.22
+asyncpg==0.30.0
+aiosqlite==0.20.0
+pydantic==2.9.2
+pyjwt==2.9.0
+python-jose[cryptography]==3.3.0
+uvicorn[standard]==0.32.0
+sqlalchemy==2.0.35
+python-multipart==0.0.20
+
+# Linting and formatting dependencies
+black==24.10.0
+flake8==7.1.1
+mypy==1.13.0
+isort==5.13.2
+
+# Testing dependencies
+pytest==8.3.4
+pytest-asyncio==0.24.0
+httpx==0.28.1
